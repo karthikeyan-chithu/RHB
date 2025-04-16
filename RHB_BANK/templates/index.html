@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RHB Statement Generator</title>
+    <meta charset="UTF-8">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #eef3f7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .form-box {
+        background-color: #fff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      .logo {
+        color: #C00000;
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      h1 {
+        margin-bottom: 25px;
+        color: #004d99;
+        font-size: 22px;
+      }
+
+      label {
+        font-weight: bold;
+        display: block;
+        text-align: left;
+        margin-bottom: 8px;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      select {
+        width: 100%;
+        padding: 10px;
+        font-size: 15px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+      }
+
+      button {
+        background-color: #C00000; /* RHB red color */
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 15px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        width: 100%;
+      }
+
+      button:hover {
+        background-color: #A00000;
+      }
+
+      .error {
+        color: #C00000;
+        margin-bottom: 15px;
+        background-color: #FFEEEE;
+        padding: 10px;
+        border-radius: 6px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-box">
+      <div class="logo">RHB BANK</div>
+      <h1>{{ translations[selected_lang].title }}</h1>
+
+      {% if error %}
+      <p class="error">{{ error }}</p>
+      {% endif %}
+      
+      <form method="POST">
+        <label for="customer_id">{{ translations[selected_lang].customer_id }}:</label>
+        <input type="number" name="customer_id" id="customer_id" required />
+
+        <label for="lang">{{ translations[selected_lang].select_language }}:</label>
+        <select name="lang" id="lang" onchange="this.form.submit()">
+          {% for code, lang_data in translations.items() %}
+            <option value="{{ code }}" {% if selected_lang == code %}selected{% endif %}>
+              {{ lang_data.display_name }}
+            </option>
+          {% endfor %}
+        </select>
+
+        <button type="submit">{{ translations[selected_lang].submit }}</button>
+      </form>
+    </div>
+    
+    <script>
+      // Auto-submit the form when language is changed
+      document.getElementById('lang').addEventListener('change', function() {
+        this.form.submit();
+      });
+    </script>
+  </body>
+</html>
